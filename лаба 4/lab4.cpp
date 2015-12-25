@@ -1,0 +1,81 @@
+#include <iostream>
+#include <stdint.h>
+#include <vector>
+using namespace std;
+
+
+int main()
+{
+	using namespace std;
+    vector<int> data{1};
+    int x=0x12345678;
+    char y[] { "Hello!" };
+    print_in_hex(y, sizeof(y));
+    cout <<"\n";
+    print_in_binary(y, sizeof(y));
+}
+char convert_in_hex(uint8_t x)
+{   switch (x)
+    {
+    case 0b0000: return '0'; break;
+    case 0b0001: return '1'; break;
+    case 0b0010: return '2'; break;
+    case 0b0011: return '3'; break;
+    case 0b0100: return '4'; break;
+    case 0b0101: return '5'; break;
+    case 0b0110: return '6'; break;
+    case 0b0111: return '7'; break;
+    case 0b1000: return '8'; break;
+    case 0b1001: return '9'; break;
+    case 0b1010: return 'A'; break;
+    case 0b1011: return 'B'; break;
+    case 0b1100: return 'C'; break;
+    case 0b1101: return 'D'; break;
+    case 0b1110: return 'E'; break;
+    case 0b1111: return 'F'; break;
+    }
+}
+void print_in_hex1(uint8_t byte)
+{
+    char x,x1;
+    uint8_t byte1=(byte&0b11110000)>>4;
+    x=convert_in_hex(byte1);
+    uint8_t byte2=byte&0b00001111;
+    x1=convert_in_hex(byte2);
+    cout << /*"Your num in hex: " <<*/x<<x1;
+}
+
+void print_in_hex(const void* data, size_t size)
+{
+    const uint8_t* data1=reinterpret_cast<const uint8_t*>(data);
+    for(int i=0; i<size; ++i)
+    {
+        print_in_hex1(data1[i]);cout << ' ';
+    }
+
+
+}
+void print_in_binary1(uint8_t byte)
+{
+    char x;
+    for(int i=7; i>-1; --i)
+    {
+        uint8_t byte1=byte&((0b10000000)>>(7-i))>>i;
+        switch (byte1)
+        {
+            case 1: x='1'; break;
+            case 0: x='0'; break;
+        }
+        cout <<x;
+    }
+}
+
+void print_in_binary(const void* data, size_t size)
+{
+    const uint8_t* data1=reinterpret_cast<const uint8_t*>(data);
+    for(int i=0; i<size; ++i)
+    {
+        print_in_binary1(data1[i]);
+        cout << ' ';
+    }
+}
